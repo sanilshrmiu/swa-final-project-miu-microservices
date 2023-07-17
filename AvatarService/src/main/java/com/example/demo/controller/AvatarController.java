@@ -43,5 +43,10 @@ public class AvatarController {
          avatarService.delete(id);
     }
 
+    @GetMapping("verifyReference/{avatarId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean verifyReference(@PathVariable("avatarId") String id){
+        return avatarService.verifyReference(id);
+    }
 
 }

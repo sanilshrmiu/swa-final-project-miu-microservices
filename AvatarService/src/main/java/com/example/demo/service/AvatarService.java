@@ -11,4 +11,6 @@ public interface AvatarService {
 
     List<AvatarDTO> findAll();
     AvatarDTO getById(String id);
+
+    Boolean verifyReference(String id);
 }

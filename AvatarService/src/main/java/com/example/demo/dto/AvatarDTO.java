@@ -1,5 +1,8 @@
 package com.example.demo.dto;
 
+import lombok.Data;
+
+@Data
 public class AvatarDTO {
     private String id;
     private String head;

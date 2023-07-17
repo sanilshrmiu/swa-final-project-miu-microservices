@@ -1,0 +1,5 @@
+server:
+  port: 8085
+spring.data.mongodb:
+  database: avatars
+  uri: mongodb://localhost:27017

@@ -50,4 +50,15 @@ public class AvatarServiceImpl implements AvatarService {
         var retVal = avatarRepository.findById(id).orElseThrow(()-> new RuntimeException("Data not found"));
         return  modelMapper.map(retVal, AvatarDTO.class);
     }
+
+    @Override
+    public Boolean verifyReference(String id) {
+        try {
+            avatarRepository.findById(id).orElseThrow(()-> new RuntimeException("Data not found"));
+            return true;
+        }
+        catch(Exception ex) {
+            return false;
+        }
+    }
 }

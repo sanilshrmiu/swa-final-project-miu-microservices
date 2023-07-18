@@ -20,7 +20,7 @@ public class Roles {
     Long id;
 
     @Enumerated(EnumType.STRING)
-    ERoles role = ERoles.USER;
+    ERoles role = ERoles.STUDENT;
 
     public Long getId() {
         return id;

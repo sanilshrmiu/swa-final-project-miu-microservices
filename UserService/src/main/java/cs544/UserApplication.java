@@ -41,18 +41,20 @@ public class UserApplication implements CommandLineRunner {
 		Set<Roles> roles = new HashSet<>();
 		Roles adminRole = new Roles();
 		adminRole.setRole(ERoles.ADMIN);
-		Roles userRole = new Roles();
-		userRole.setRole(ERoles.USER);
+		Roles teacherRole = new Roles();
+		teacherRole.setRole(ERoles.TEACHER);
+		Roles studentRole = new Roles();
+		studentRole.setRole(ERoles.STUDENT);
 
 		roles.add(adminRole);
-		roles.add(userRole);
+		roles.add(teacherRole);
+		roles.add(studentRole);
 
 		List < Roles > role = roleRepository.findAll();
 		if (role.size() == 0) {
-
-
 			roleRepository.saveAll(roles);
 		}
+
 		List<User> user =userRepository.findAll();
 		if(user.size() ==0){
 
@@ -64,25 +66,43 @@ public class UserApplication implements CommandLineRunner {
 			List<Roles> adminUserRoles = new ArrayList<>();
 
 			adminUserRoles.add(adminRole);
-			adminUserRoles.add(userRole);
+			adminUserRoles.add(teacherRole);
+			adminUserRoles.add(studentRole);
 			adminUser.setRoles(adminUserRoles);
+
 			userService.saveUser(adminUser);
 
-			User userUser = new User();
-			userUser.setEmail("user@miu.edu");
-			userUser.setPassword("user");
-			userUser.setUsername("user");
+			User teacherUser = new User();
+			teacherUser.setEmail("teacher@miu.edu");
+			teacherUser.setPassword("teacher");
+			teacherUser.setUsername("teacher");
 
-			List<Roles> userRoles = new ArrayList<>();
+			List<Roles> teacherRoles = new ArrayList<>();
 
-			userRoles.add(userRole);
+			teacherRoles.add(teacherRole);
+			teacherUser.setRoles(teacherRoles);
+			userService.saveUser(teacherUser);
 
-			userUser.setRoles(userRoles);
-			userService.saveUser(userUser);
+
+
+			// First creating Student User
+			User studentUser = new User();
+			studentUser.setEmail("student@miu.edu");
+			studentUser.setPassword("student");
+			studentUser.setUsername("student");
+
+			// List of roles assigned to student
+			List<Roles> studentRoles = new ArrayList<>();
+			studentRoles.add(studentRole);
+
+			// Setting roles of student to student object now
+			studentUser.setRoles(studentRoles);
+
+			// Adding student to database
+			userService.saveUser(studentUser);
 
 		}
-		System.out.println("Server is running!!!!!!");
-
+		System.out.println("Server is running!!!!");
 	}
 
 }

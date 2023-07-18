@@ -1,10 +1,10 @@
-package controller;
+package com.example.demo.controller;
 
-import dto.ElementDTO;
+import com.example.demo.dto.ElementDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import service.ElementService;
+import com.example.demo.service.ElementService;
 
 import java.util.List;
 

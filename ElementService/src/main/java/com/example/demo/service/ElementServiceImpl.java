@@ -1,12 +1,12 @@
-package service;
+package com.example.demo.service;
 
-import dto.ElementDTO;
-import dto.ElementType;
+import com.example.demo.dto.ElementDTO;
+import com.example.demo.dto.ElementType;
 import lombok.RequiredArgsConstructor;
-import model.Element;
+import com.example.demo.model.Element;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import repository.ElementRepository;
+import com.example.demo.repository.ElementRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -11,12 +11,17 @@ public class Teacher {
     private Long teacherId;
     private String firstName;
     private String lastName;
+
+    private Long schoolId;
+
     private Contact contact;
     private TeachingClass teachingClass;
 
-    public Teacher(String firstName, String lastName, Contact contact, TeachingClass teachingClass) {
+    public Teacher(Long teacherId, String firstName, String lastName, Long schoolId, Contact contact, TeachingClass teachingClass) {
+        this.teacherId = teacherId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.schoolId = schoolId;
         this.contact = contact;
         this.teachingClass = teachingClass;
     }
@@ -43,6 +48,14 @@ public class Teacher {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
     }
 
     public Contact getContact() {

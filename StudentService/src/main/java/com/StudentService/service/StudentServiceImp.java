@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentService implements IStudentService {
+public class StudentServiceImp implements IStudentService {
 
     @Autowired
     StudentRepository studentRepository;

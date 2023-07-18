@@ -19,5 +19,5 @@ public class Student {
     private Long SchoolId;
     private StudentClass studentClass;
     private Long avatarId;
-    private Long rewardsId;
+    private Long rewardId;
 }

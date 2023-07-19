@@ -36,27 +36,12 @@ public class StudentController {
     ResponseEntity<?> addStudent(@RequestBody Student student){
         Student response = studentService.addStudent(student);
         return new ResponseEntity<Student>(response, HttpStatus.OK);
-//        if(response != null) {
-//            RewardDTO reward =  rewardFeignClient.getRewardData(student.getRewardId().get(0));
-//            if(reward.getRewardType().matches("ELEMENT")) {
-//                Boolean avatarCheck = avatarFeignClient.avatarUpdate(reward.getId(), reward.getRewardTypeId());
-//            }
-//        }
-
     }
 
     @RequestMapping(value = "/student/update",method = RequestMethod.PUT)
     ResponseEntity<?> updateStudent(@RequestBody Student student){
         Student response = studentService.updateStudent(student);
         return new ResponseEntity<Student>(response, HttpStatus.OK);
-//        if(response != null) {
-//            RewardDTO reward =  rewardFeignClient.getRewardData(student.getRewardId().get(0));
-//            if(reward.getRewardType().matches("ELEMENT")) {
-//                Boolean avatarCheck = avatarFeignClient.verifyReference(reward.getId(), reward.getRewardTypeId());
-//            }
-//
-//        }
-
     }
 
     @RequestMapping(value = "/student/redeemReward",method = RequestMethod.PUT)
@@ -81,6 +66,17 @@ public class StudentController {
         ElementDTO elementDTO =  elementFeignClient.getElementDataById(studentElement.getStudentId());
         Boolean avatarCheck = avatarFeignClient.avatarUpdate(student.getAvatarId(), studentElement.getElementId());
         double newScore = student.getScore() - elementDTO.getPrice();
+        student.setScore(newScore);
+        Student response = studentService.updateStudent(student);
+        return new ResponseEntity<Student>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student/removeElement",method = RequestMethod.PUT)
+    ResponseEntity<?> getRemoveElement(@RequestBody StudentElementDTO studentElement){
+        Student student = studentService.getStudentById(studentElement.getStudentId());
+        ElementDTO elementDTO =  elementFeignClient.getElementDataById(studentElement.getStudentId());
+       // Boolean avatarCheck = avatarFeignClient.avatarUpdate(student.getAvatarId(), studentElement.getElementId());
+        double newScore = student.getScore() + elementDTO.getPrice();
         student.setScore(newScore);
         Student response = studentService.updateStudent(student);
         return new ResponseEntity<Student>(response, HttpStatus.OK);

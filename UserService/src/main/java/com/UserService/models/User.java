@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.validation.annotation.Validated;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -22,6 +24,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
+@Validated
 public class User {
 
     @Id
@@ -33,7 +36,6 @@ public class User {
     private String username;
 
     @Temporal(TemporalType.DATE)
-    @NotNull
     private Date creation_date;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -43,7 +45,7 @@ public class User {
 
     @Email(message = "Invalid email address")
     @Column(unique = true)
-    @NotBlank
+    @NotBlank(message = "Email address should not be blank")
     private String email;
 
     // private String jwtToken;

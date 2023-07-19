@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.UserService.dto.ErrorResponse;
 import com.UserService.exceptions.UserCreationException;
 import com.UserService.exceptions.UserNotFoundException;
 import com.UserService.models.User;
 import com.UserService.service.UserService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
-@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/user")
 public class UserController {
-    
+
     @Autowired
     UserService userServ;
 
@@ -33,14 +38,14 @@ public class UserController {
     }
 
     @GetMapping("/")
-    List<User> getAllUsers() {
+    List < User > getAllUsers() {
         return userServ.getAllUsers();
     }
 
     @GetMapping("/{id}")
     User getUserById(@PathVariable Long id) {
         try {
-            Optional<User> user = userServ.getUserById(id);
+            Optional < User > user = userServ.getUserById(id);
             return user.get();
 
         } catch (Exception e) {
@@ -49,24 +54,24 @@ public class UserController {
         }
     }
 
-    @PostMapping("/")
-    ResponseEntity<User> registerUser(@RequestBody User newUser) {
+    @PostMapping
+    ResponseEntity < ? > registerUser(@Valid @RequestBody User newUser) {
+            Optional < User > newUserAdded = userServ.saveUser(newUser);
+            if (!newUserAdded.isPresent()) {
+                throw new UserCreationException("Error creating User");
+            }
+            return ResponseEntity.ok(newUserAdded.get());
 
-        Optional<User> newUserAdded = userServ.saveUser(newUser);
 
-        if(!newUserAdded.isPresent()) {
-            throw new UserCreationException();
         }
-        
+
+
+
         // helperFunctions.attachJWT(newUserAdded.get());
-        
-        return ResponseEntity.ok(newUserAdded.get());
-
-    }
-
-
 
 
     
+
+
 
 }

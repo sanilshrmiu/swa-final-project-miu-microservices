@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: Email Service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: swafinalmicroservices@gmail.com
+    password: Siamak@123
+    properties:
+      mail:
+        smtp:
+          auth: true
+        starttls:
+          enable: true
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      auto-offset-reset: earliest
+      group-id: gid
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: kafka
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    bootstrap-servers: localhost:9092
+server:
+  port: 8090
+application:
+  title: Email Service
+  version: 1.0.0

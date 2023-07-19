@@ -13,4 +13,6 @@ public interface AvatarService {
     AvatarDTO getById(String id);
 
     Boolean verifyReference(String id);
+
+    Boolean addElement(String avatarId, String elementId);
 }

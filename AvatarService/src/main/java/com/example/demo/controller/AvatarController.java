@@ -49,4 +49,10 @@ public class AvatarController {
         return avatarService.verifyReference(id);
     }
 
+    @PutMapping("/addElement/{avatarId}/{elementId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean addElement(@PathVariable("avatarId") String avatarId, @PathVariable("elementId") String elementId){
+        return avatarService.addElement(avatarId, elementId);
+    }
+
 }

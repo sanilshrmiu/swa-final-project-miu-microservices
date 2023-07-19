@@ -72,27 +72,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST,"/api/user/login").permitAll()
-                .requestMatchers("/swagger/**", "/swagger-ui/**").permitAll()
-                .requestMatchers(HttpMethod.GET,"/api/user/").hasAnyAuthority("ADMIN")
-                .requestMatchers("/api/user/register").permitAll()
-                .requestMatchers("/api/user/").permitAll()
-//                .requestMatchers("/swagger/**").permitAll()
-//                .requestMatchers("/swagger-ui/**").permitAll()
-                // .requestMatchers("/api/user/").permitAll()
-                // .antMatchers("/login/authenticate", "/members", "/users").permitAll()
-                // .antMatchers("/login/authenticate", "/members", "/users").permitAll()
-                // .requestMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                    response.setContentType("application/json");
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().write("{ \"error\": \"Access denied\" }");
-                });
+//         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//         http.authorizeHttpRequests()
+//                 .requestMatchers(HttpMethod.POST,"/api/users/login").hasAnyAuthority("ADMIN")
+//                 .requestMatchers(HttpMethod.POST,"/api/user/register").permitAll()
+//                 // .requestMatchers("/swagger/**", "/swagger-ui/**").permitAll()
+//                 .requestMatchers(HttpMethod.GET,"/api/user/").hasAnyAuthority("ADMIN")
+//                 .requestMatchers("/api/user/").permitAll()
+// //                .requestMatchers("/swagger/**").permitAll()
+// //                .requestMatchers("/swagger-ui/**").permitAll()
+//                 // .requestMatchers("/api/user/").permitAll()
+//                 // .antMatchers("/login/authenticate", "/members", "/users").permitAll()
+                
+//                 // .antMatchers("/login/authenticate", "/members", "/users").permitAll()
+//                 // .requestMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ADMIN")
+//                 // .anyRequest().authenticated()
+//                 .and()
+//                 .exceptionHandling()
+//                 .accessDeniedHandler((request, response, accessDeniedException) -> {
+//                     response.setContentType("application/json");
+//                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//                     response.getWriter().write("{ \"error\": \"Access denied\" }");
+//                 });
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

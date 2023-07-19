@@ -11,6 +11,6 @@ public class Roles {
     Long id;
 
     @Enumerated(EnumType.STRING)
-    ERoles role = ERoles.USER;
+    ERoles role = ERoles.STUDENT;
 
 }

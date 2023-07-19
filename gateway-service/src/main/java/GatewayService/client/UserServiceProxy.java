@@ -44,7 +44,7 @@ public class UserServiceProxy implements IUserServiceProxy {
         
         // ADDING DEFAULT USER ROLE EACH TIME
         Roles defaultUserRole = new Roles();
-        defaultUserRole.setRole(ERoles.USER);
+        defaultUserRole.setRole(ERoles.STUDENT);
         List<Roles> roles = user.getRoles();
         roles.add(defaultUserRole);
 

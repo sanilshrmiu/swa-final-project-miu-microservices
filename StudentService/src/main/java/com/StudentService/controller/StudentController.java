@@ -26,9 +26,6 @@ public class StudentController {
     AvatarFeignClient avatarFeignClient;
     @Autowired
     RewardFeignClient rewardFeignClient;
-
-    @Autowired
-    RewardListFeignClient rewardListFeignClient;
     @Autowired
     ElementFeignClient elementFeignClient;
 
@@ -54,10 +51,14 @@ public class StudentController {
         if(rewardData.getRewardType().matches("ELEMENT")) {
             Boolean avatarCheck = avatarFeignClient.avatarUpdate(student.getAvatarId(), rewardData.getRewardTypeId());
         }
-        double newScore = student.getScore() - rewardData.getPrice();
-        student.setScore(newScore);
-        Student response = studentService.updateStudent(student);
-        return new ResponseEntity<Student>(response, HttpStatus.OK);
+        if(student.getScore()>=rewardData.getPrice()) {
+            double newScore = student.getScore() - rewardData.getPrice();
+            student.setScore(newScore);
+            Student response = studentService.updateStudent(student);
+            return new ResponseEntity<Student>(response, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<String>("Not sufficient score to get reward", HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/student/purchseElement",method = RequestMethod.PUT)
@@ -65,10 +66,14 @@ public class StudentController {
         Student student = studentService.getStudentById(studentElement.getStudentId());
         ElementDTO elementDTO =  elementFeignClient.getElementDataById(studentElement.getStudentId());
         Boolean avatarCheck = avatarFeignClient.avatarUpdate(student.getAvatarId(), studentElement.getElementId());
-        double newScore = student.getScore() - elementDTO.getPrice();
-        student.setScore(newScore);
-        Student response = studentService.updateStudent(student);
-        return new ResponseEntity<Student>(response, HttpStatus.OK);
+        if(student.getScore()>=elementDTO.getPrice()) {
+            double newScore = student.getScore() - elementDTO.getPrice();
+            student.setScore(newScore);
+            Student response = studentService.updateStudent(student);
+            return new ResponseEntity<Student>(response, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<String>("Not sufficient score to get reward", HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/student/removeElement",method = RequestMethod.PUT)
@@ -129,13 +134,9 @@ public class StudentController {
     interface RewardFeignClient{
         @RequestMapping(value ="/rewards/get/{rewardId}", method = RequestMethod.GET)
         public RewardDTO getRewardData(@PathVariable("rewardId") Long rewardId);
-    }
 
-    @FeignClient(name = "RewardService")
-    interface RewardListFeignClient{
         @RequestMapping(value ="/reward", method = RequestMethod.GET)
         public Boolean getRewardId();
     }
-
 
 }

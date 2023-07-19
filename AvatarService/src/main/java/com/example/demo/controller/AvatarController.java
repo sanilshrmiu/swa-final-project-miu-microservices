@@ -51,7 +51,7 @@ public class AvatarController {
 
     @PutMapping("/addElement/{avatarId}/{elementId}")
     @ResponseStatus(HttpStatus.OK)
-    public AvatarDTO addElement(@PathVariable("avatarId") String avatarId, @PathVariable("elementId") String elementId){
+    public Boolean addElement(@PathVariable("avatarId") String avatarId, @PathVariable("elementId") String elementId){
         return avatarService.addElement(avatarId, elementId);
     }
 

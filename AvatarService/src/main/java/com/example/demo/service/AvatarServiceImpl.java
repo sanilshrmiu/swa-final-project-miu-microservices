@@ -60,50 +60,55 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public AvatarDTO addElement(String avatarId, String elementId) {
-        var avatar = avatarRepository.findById(avatarId).orElseThrow(()-> new RuntimeException("Data not found"));
-        var element = elementFiegnClient.getById(elementId);
+    public Boolean addElement(String avatarId, String elementId) {
+        try{
+            var avatar = avatarRepository.findById(avatarId).orElseThrow(()-> new RuntimeException("Data not found"));
+            var element = elementFiegnClient.getById(elementId);
 
-        switch (ElementType.valueOf(element.getType()))
-        {
-            case hair:
-                avatar.setHair(elementId);
-                break;
-            case head:
-                avatar.setHead(elementId);
-                break;
-            case eye:
-                avatar.setEye(elementId);
-                break;
-            case nose:
-                avatar.setNose(elementId);
-                break;
-            case mouth:
-                avatar.setMouth(elementId);
-                break;
-            case ears:
-                avatar.setEars(elementId);
-                break;
-            case body:
-                avatar.setBody(elementId);
-                break;
-            case  hat:
-                avatar.setHat(elementId);
-                break;
-            case top:
-                avatar.setTop(elementId);
-                break;
-            case topcolour:
-                avatar.setTopColor(elementId);
-                break;
-            case hatcolour:
-                avatar.setHatColor(elementId);
-                break;
+            switch (ElementType.valueOf(element.getType()))
+            {
+                case hair:
+                    avatar.setHair(elementId);
+                    break;
+                case head:
+                    avatar.setHead(elementId);
+                    break;
+                case eye:
+                    avatar.setEye(elementId);
+                    break;
+                case nose:
+                    avatar.setNose(elementId);
+                    break;
+                case mouth:
+                    avatar.setMouth(elementId);
+                    break;
+                case ears:
+                    avatar.setEars(elementId);
+                    break;
+                case body:
+                    avatar.setBody(elementId);
+                    break;
+                case  hat:
+                    avatar.setHat(elementId);
+                    break;
+                case top:
+                    avatar.setTop(elementId);
+                    break;
+                case topcolour:
+                    avatar.setTopColor(elementId);
+                    break;
+                case hatcolour:
+                    avatar.setHatColor(elementId);
+                    break;
 
+            }
+
+            avatarRepository.save(avatar);
+            return true;
         }
-
-        avatarRepository.save(avatar);
-        return modelMapper.map(avatar, AvatarDTO.class);
+        catch(Exception ex){
+            return false;
+        }
     }
 
     private boolean isValidElementType(String value) {

@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.UserService.daos.IUserDao;
+import com.UserService.exceptions.UserCreationException;
 import com.UserService.models.Roles;
 import com.UserService.models.User;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 
@@ -41,7 +43,15 @@ public class UserService {
         String salt = BCrypt.gensalt();
 
         user.setPassword(BCrypt.hashpw(user.getPassword(), salt));
-        return Optional.of(ud.save(user));
+        try {
+            User savedUser = ud.save(user);
+            return Optional.of(savedUser);
+            
+        } catch (DataIntegrityViolationException e) {
+            // TODO: handle exception
+            throw new DataIntegrityViolationException("User already exists");
+        }
+        
     }
 
     public Optional < User > getUserByUsernameAndPassword(String username, String password) {

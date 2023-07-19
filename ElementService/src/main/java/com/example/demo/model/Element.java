@@ -11,5 +11,5 @@ public class Element {
     private String id;
 
     private String type;
-    private String price;
+    private double price;
 }

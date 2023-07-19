@@ -1,14 +1,18 @@
 package com.StudentService.controller;
 
+import com.StudentService.dto.ElementDTO;
+import com.StudentService.dto.RewardDTO;
 import com.StudentService.domain.Student;
+import com.StudentService.dto.StudentElementDTO;
+import com.StudentService.dto.StudentRewardDTO;
 import com.StudentService.service.StudentServiceImp;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,38 +27,59 @@ public class StudentController {
     @Autowired
     RewardFeignClient rewardFeignClient;
 
+    @Autowired
+    RewardListFeignClient rewardListFeignClient;
+    @Autowired
+    ElementFeignClient elementFeignClient;
+
     @RequestMapping(value = "/student/add",method = RequestMethod.POST)
     ResponseEntity<?> addStudent(@RequestBody Student student){
-
-       // return new ResponseEntity<String>("School Id does not exist", HttpStatus.OK);
-
-        Boolean schoolCheck =  schoolFeignClient.getSchoolId(student.getSchoolId());
-        Boolean avatarCheck =  avatarFeignClient.verifyReference(student.getAvatarId());
-        Boolean rewardCheck =  rewardFeignClient.getRewardId(student.getRewardId());
-        if(!schoolCheck) {
-            return new ResponseEntity<String>("School Id does not exist", HttpStatus.OK);
-        }else if(!avatarCheck){
-            return new ResponseEntity<String>("Avatar Id does not exist", HttpStatus.OK);
-        }else if(!rewardCheck){
-            return new ResponseEntity<String>("Reward Id does not exist", HttpStatus.OK);
-        }
         Student response = studentService.addStudent(student);
+        if(response != null) {
+            RewardDTO reward =  rewardFeignClient.getRewardData(student.getRewardId().get(0));
+            if(reward.getRewardType().matches("ELEMENT")) {
+                Boolean avatarCheck = avatarFeignClient.verifyReference(reward.getId(), reward.getRewardTypeId());
+            }
+        }
         return new ResponseEntity<Student>(response, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/student/update",method = RequestMethod.PUT)
     ResponseEntity<?> updateStudent(@RequestBody Student student){
-        Boolean schoolCheck =  schoolFeignClient.getSchoolId(student.getSchoolId());
-        Boolean avatarCheck =  avatarFeignClient.verifyReference(student.getAvatarId());
-        Boolean rewardCheck =  rewardFeignClient.getRewardId(student.getRewardId());
-        if(!schoolCheck) {
-            return new ResponseEntity<String>("School Id does not exist", HttpStatus.OK);
-        }else if(!avatarCheck){
-            return new ResponseEntity<String>("Avatar Id does not exist", HttpStatus.OK);
-        }else if(!rewardCheck){
-            return new ResponseEntity<String>("Reward Id does not exist", HttpStatus.OK);
+        Student response = studentService.updateStudent(student);
+        if(response != null) {
+            RewardDTO reward =  rewardFeignClient.getRewardData(student.getRewardId().get(0));
+            if(reward.getRewardType().matches("ELEMENT")) {
+                Boolean avatarCheck = avatarFeignClient.verifyReference(reward.getId(), reward.getRewardTypeId());
+            }
+
         }
+        return new ResponseEntity<Student>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student/redeemReward",method = RequestMethod.PUT)
+    ResponseEntity<?> getStudentReward(@RequestBody StudentRewardDTO studentReward){
+        Student student = studentService.getStudentById(studentReward.getStudentId());
+        List<Long> reward = new ArrayList<>();
+        reward.add(studentReward.getRewardId());
+        student.setRewardId(reward);
+        RewardDTO rewardData =  rewardFeignClient.getRewardData(student.getRewardId().get(0));
+        if(rewardData.getRewardType().matches("ELEMENT")) {
+            Boolean avatarCheck = avatarFeignClient.verifyReference(student.getAvatarId(), rewardData.getRewardTypeId());
+        }
+        double newScore = student.getScore() - rewardData.getPrice();
+        student.setScore(newScore);
+        Student response = studentService.updateStudent(student);
+        return new ResponseEntity<Student>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student/purchseElement",method = RequestMethod.PUT)
+    ResponseEntity<?> getPurchaseElement(@RequestBody StudentElementDTO studentElement){
+        Student student = studentService.getStudentById(studentElement.getStudentId());
+        ElementDTO elementDTO =  elementFeignClient.getElementDataById(studentElement.getStudentId());
+        Boolean avatarCheck = avatarFeignClient.verifyReference(student.getAvatarId(), studentElement.getElementId());
+        double newScore = student.getScore() - elementDTO.getPrice();
+        student.setScore(newScore);
         Student response = studentService.updateStudent(student);
         return new ResponseEntity<Student>(response, HttpStatus.OK);
     }
@@ -92,14 +117,27 @@ public class StudentController {
 
     @FeignClient(name = "AvatarService")
     interface AvatarFeignClient{
-        @RequestMapping(value = "/avatars/verifyReference/{avatarId}",method = RequestMethod.GET)
-        public Boolean verifyReference(@PathVariable("avatarId") Long avatarId);
+        @RequestMapping(value = "/avatars/verifyReference/{rewardId}/{elementId}",method = RequestMethod.GET)
+        public Boolean verifyReference(@PathVariable("rewardId") Long rewardId, @PathVariable("elementId") Long elementId);
+    }
+
+    @FeignClient(name = "ElementService")
+    interface ElementFeignClient{
+        @RequestMapping(value ="/elements/{elementId}", method = RequestMethod.GET)
+        public ElementDTO getElementDataById(@PathVariable("elementId") Long elementId);
     }
 
     @FeignClient(name = "RewardService")
     interface RewardFeignClient{
-        @RequestMapping(value ="/rewards/verifyReference/{rewardId}", method = RequestMethod.GET)
-        public Boolean getRewardId(@PathVariable("rewardId") Long rewardId);
+        @RequestMapping(value ="/rewards/get/{rewardId}", method = RequestMethod.GET)
+        public RewardDTO getRewardData(@PathVariable("rewardId") Long rewardId);
     }
+
+    @FeignClient(name = "RewardService")
+    interface RewardListFeignClient{
+        @RequestMapping(value ="/reward", method = RequestMethod.GET)
+        public Boolean getRewardId();
+    }
+
 
 }

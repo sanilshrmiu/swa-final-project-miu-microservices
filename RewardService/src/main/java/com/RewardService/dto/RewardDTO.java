@@ -15,6 +15,6 @@ public class RewardDTO {
     private String name;
     private int quantity;
     private RewardType rewardType;
-
+    private Long rewardTypeId;
     private double price;
 }

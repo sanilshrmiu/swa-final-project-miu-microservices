@@ -1,17 +1,21 @@
 spring:
   application:
     name: Email Service
+  freemarker:
+    template-loader-path: classpath:/templates
   mail:
     host: smtp.gmail.com
-    port: 587
+    port: 465
     username: swafinalmicroservices@gmail.com
-    password: Siamak@123
+    password: avtyhrikckufdkpj
     properties:
       mail:
         smtp:
           auth: true
-        starttls:
-          enable: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

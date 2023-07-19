@@ -4,10 +4,13 @@ import com.example.emailservice.dto.KafkaMessageTemplate;
 import com.example.emailservice.service.EmailSenderService;
 import com.example.emailservice.service.GmailEmailSender;
 import com.google.gson.Gson;
+import freemarker.template.TemplateException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,7 +24,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private final GmailEmailSender gmailEmailSender;
 
     @Override
-    public void sendMessage(String message) {
+    public void sendMessage(String message) throws TemplateException, IOException, MessagingException {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = now.format(formatter);

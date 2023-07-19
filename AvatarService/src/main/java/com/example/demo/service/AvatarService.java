@@ -14,5 +14,5 @@ public interface AvatarService {
 
     Boolean verifyReference(String id);
 
-    AvatarDTO addElement(String avatarId, String elementId);
+    Boolean addElement(String avatarId, String elementId);
 }

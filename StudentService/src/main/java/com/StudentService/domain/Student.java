@@ -3,8 +3,11 @@ package com.StudentService.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.val;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @Document
@@ -18,6 +21,7 @@ public class Student {
     private String studentNumber;
     private Long SchoolId;
     private StudentClass studentClass;
+    private double score = 1000;
     private Long avatarId;
-    private Long rewardId;
+    private List<Long> rewardId;
 }

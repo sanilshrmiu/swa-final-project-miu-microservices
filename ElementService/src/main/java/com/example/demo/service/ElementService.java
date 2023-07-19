@@ -1,7 +1,6 @@
-package service;
+package com.example.demo.service;
 
-import dto.ElementDTO;
-import model.Element;
+import com.example.demo.dto.ElementDTO;
 
 import java.util.List;
 

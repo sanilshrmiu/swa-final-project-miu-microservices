@@ -39,6 +39,7 @@ public class StudentServiceImp implements IStudentService {
         if(student1.isPresent()){
             StudentClass studentClass = new StudentClass(student.getStudentClass().getYear(),student.getStudentClass().getGroup());
             student.setStudentClass(studentClass);
+            //student.setRewardId(student1.get().getRewardId());
             studentRepository.save(student);
             return student;
         }else{

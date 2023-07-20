@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping(value = "/api/oauthtoken")
+@RequestMapping(value = "users")
 public class AuthController {
 
     @Autowired
@@ -25,7 +25,7 @@ public class AuthController {
     @Autowired
     AuthService authServ;
 
-    @PostMapping(value="/")
+    @PostMapping(value="login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User userObjToBeAuthenticated) {
         String jwtToken = authServ.authenticateUser(userObjToBeAuthenticated);
         

@@ -31,7 +31,7 @@ spring:
         - id: UserService
           uri: lb://UserService
           predicates:
-            - Path=/api/user/**
+            - Path=/users/**
 server:
   port: 8080
 eureka:

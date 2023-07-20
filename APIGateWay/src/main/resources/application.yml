@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: APIGateway
+  cloud:
+    gateway:
+      routes:
+        - id: SchoolService
+          uri: lb://SchoolService
+          predicates:
+            - Path=/school/**
+        - id: TeacherService
+          uri: lb://TeacherService
+          predicates:
+            - Path=/teacher/**
+        - id: StudentService
+          uri: lb://StudentService
+          predicates:
+            - Path=/student/**
+        - id: AvatarService
+          uri: lb://AvatarService
+          predicates:
+            - Path=/avatars/**
+        - id: ElementService
+          uri: lb://ElementService
+          predicates:
+            - Path=/elements/**
+        - id: RewardService
+          uri: lb://RewardService
+          predicates:
+            - Path=/rewards/**
+        - id: UserService
+          uri: lb://UserService
+          predicates:
+            - Path=/users/**
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

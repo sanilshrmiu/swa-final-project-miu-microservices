@@ -6,10 +6,12 @@ import com.StudentService.domain.Student;
 import com.StudentService.dto.StudentElementDTO;
 import com.StudentService.dto.StudentRewardDTO;
 import com.StudentService.service.StudentServiceImp;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,9 +31,21 @@ public class StudentController {
     @Autowired
     ElementFeignClient elementFeignClient;
 
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+
     @RequestMapping(value = "/student/add",method = RequestMethod.POST)
     ResponseEntity<?> addStudent(@RequestBody Student student){
         Student response = studentService.addStudent(student);
+        if(response != null){
+            KafkaMessageTemplate kafkaMessageTemplate = new KafkaMessageTemplate();
+            kafkaMessageTemplate.setEmail("sanil.shrestha.12@gmail.com");
+            kafkaMessageTemplate.setCreatedUserType("Student");
+            Gson gson = new Gson();
+            kafkaTemplate.send("email-topic",gson.toJson(kafkaMessageTemplate));
+        }
         return new ResponseEntity<Student>(response, HttpStatus.OK);
     }
 

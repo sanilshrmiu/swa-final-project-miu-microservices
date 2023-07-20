@@ -32,7 +32,7 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     bootstrap-servers: localhost:9092
 server:
-  port: 8090
+  port: 8088
 application:
   title: Email Service
   version: 1.0.0

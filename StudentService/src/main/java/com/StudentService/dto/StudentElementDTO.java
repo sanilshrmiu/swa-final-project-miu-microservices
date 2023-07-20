@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentElementDTO {
     private Long studentId;
-    private Long ElementId;
+    private Long elementId;
 }

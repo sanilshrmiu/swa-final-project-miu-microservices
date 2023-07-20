@@ -72,7 +72,7 @@ public class StudentController {
             Student response = studentService.updateStudent(student);
             return new ResponseEntity<Student>(response, HttpStatus.OK);
         }else{
-            return new ResponseEntity<String>("Not sufficient score to get Element", HttpStatus.OK);
+            return new ResponseEntity<String>("Not sufficient score to purchase Element", HttpStatus.OK);
         }
     }
 

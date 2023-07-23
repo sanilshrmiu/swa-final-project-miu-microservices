@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigInteger;
+
 @Document
 @Data
 @NoArgsConstructor
@@ -13,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class School {
 
     @Id
-    private Long schoolId;
+    private String schoolId;
     private String Name;
     private String address;
     private Contact contact;

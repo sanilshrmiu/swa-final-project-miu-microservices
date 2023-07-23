@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SchoolDTO {
-    private Long schoolId;
+    private String schoolId;
     private String Name;
     private String address;
     private ContactDTO contact;

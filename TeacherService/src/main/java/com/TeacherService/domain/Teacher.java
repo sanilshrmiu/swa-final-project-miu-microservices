@@ -1,14 +1,15 @@
 package com.TeacherService.domain;
 
 import jakarta.annotation.Generated;
+import jakarta.persistence.GeneratedValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document(collection = "teachers")
 public class Teacher {
 
     @Id
-    private Long teacherId;
+    private String teacherId;
     private String firstName;
     private String lastName;
 
@@ -17,7 +18,7 @@ public class Teacher {
     private Contact contact;
     private TeachingClass teachingClass;
 
-    public Teacher(Long teacherId, String firstName, String lastName, Long schoolId, Contact contact, TeachingClass teachingClass) {
+    public Teacher(String teacherId, String firstName, String lastName, Long schoolId, Contact contact, TeachingClass teachingClass) {
         this.teacherId = teacherId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,11 +27,11 @@ public class Teacher {
         this.teachingClass = teachingClass;
     }
 
-    public Long getTeacherId() {
+    public String getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(Long teacherId) {
+    public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
     }
 

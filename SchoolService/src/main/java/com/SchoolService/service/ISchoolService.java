@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface ISchoolService {
     SchoolDTO save(SchoolDTO school);
-    Long delete(Long id);
-    SchoolDTO update(SchoolDTO school, Long id);
+    String delete(String id);
+    SchoolDTO update(SchoolDTO school, String id);
     List<SchoolDTO> findAll();
-    SchoolDTO getById(Long id);
-    Boolean verifyReference(Long id);
+    SchoolDTO getById(String id);
+    Boolean verifyReference(String id);
 }

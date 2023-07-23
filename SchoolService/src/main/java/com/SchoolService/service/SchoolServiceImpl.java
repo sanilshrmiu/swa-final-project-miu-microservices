@@ -28,13 +28,13 @@ public class SchoolServiceImpl implements ISchoolService{
     }
 
     @Override
-    public Long delete(Long id) {
+    public String delete(String id) {
         schoolRepository.deleteById(id);
         return id;
     }
 
     @Override
-    public SchoolDTO update(SchoolDTO school, Long id) {
+    public SchoolDTO update(SchoolDTO school, String id) {
         schoolRepository.findById(id).orElseThrow(()-> new RuntimeException("Data not found"));
         var schoolModel = modelMapper.map(school, School.class);
         schoolModel.setSchoolId(id);
@@ -52,13 +52,13 @@ public class SchoolServiceImpl implements ISchoolService{
     }
 
     @Override
-    public SchoolDTO getById(Long id) {
+    public SchoolDTO getById(String id) {
         var retVal = schoolRepository.findById(id).orElseThrow(()-> new RuntimeException("Data not found"));
         return  modelMapper.map(retVal, SchoolDTO.class);
     }
 
     @Override
-    public Boolean verifyReference(Long id) {
+    public Boolean verifyReference(String id) {
         try {
             schoolRepository.findById(id).orElseThrow(()-> new RuntimeException("Data not found"));
             return true;

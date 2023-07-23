@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/school")
@@ -25,7 +26,7 @@ public class SchoolController {
 
     @GetMapping("/get/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    public SchoolDTO getById(@PathVariable("schoolId") Long id){
+    public SchoolDTO getById(@PathVariable("schoolId") String id){
         return schoolService.getById(id);
     }
 
@@ -37,19 +38,19 @@ public class SchoolController {
 
     @PutMapping("/update/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    public SchoolDTO update(@RequestBody SchoolDTO dto, @PathVariable("schoolId") Long id){
+    public SchoolDTO update(@RequestBody SchoolDTO dto, @PathVariable("schoolId") String id){
         return schoolService.update(dto, id);
     }
 
     @DeleteMapping("/delete/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("schoolId") Long id){
+    public void delete(@PathVariable("schoolId") String id){
         schoolService.delete(id);
     }
 
     @GetMapping("/verifyReference/{schoolId}")
     @ResponseStatus(HttpStatus.OK)
-    public Boolean verifyReference(@PathVariable("schoolId") Long id){
+    public Boolean verifyReference(@PathVariable("schoolId") String id){
         return schoolService.verifyReference(id);
     }
 

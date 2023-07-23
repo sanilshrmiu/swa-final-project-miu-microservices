@@ -32,7 +32,7 @@ public class TeacherService implements ITeacherService{
         return teacher;
     }
 
-    public String deleteTeacher(Long teacherId){
+    public String deleteTeacher(String teacherId){
         Optional<Teacher> teacher1 = teacherRepository.findById(teacherId);
         if(teacher1.isPresent()){
             teacherRepository.deleteById(teacherId);
@@ -42,7 +42,7 @@ public class TeacherService implements ITeacherService{
         }
     }
 
-    public Teacher getTeacherById(Long teacherId){
+    public Teacher getTeacherById(String teacherId){
         Optional<Teacher> teacher1 = teacherRepository.findById(teacherId);
        // return teacher1;
         if(teacher1.isPresent()){
